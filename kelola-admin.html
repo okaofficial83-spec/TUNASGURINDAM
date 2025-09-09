@@ -1,0 +1,657 @@
+R<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Kelola Admin & Daftar Admin - Tunas Gurindam Corps</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .header h1 {
+      color: #4f46e5;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .header p {
+      color: #6b7280;
+      font-size: 1.1rem;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+    }
+
+    .nav-btn.secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+
+    .login-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .admin-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .form-group input:hover {
+      border-color: #7c3aed;
+      transform: translateY(-1px);
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(79, 70, 229, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+    }
+
+    .btn-success:hover {
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .btn-danger:hover {
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .alert-success {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+    }
+
+    .alert-error {
+      background-color: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .admin-table th {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .admin-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .admin-table tr:hover {
+      background-color: #f1f5f9;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .admin-actions button {
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .admin-actions button:hover {
+      transform: translateY(-1px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .stat-card h4 {
+      color: #6b7280;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #4f46e5;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-btn {
+        text-align: center;
+      }
+
+      .admin-table {
+        font-size: 0.9rem;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 10px 8px;
+      }
+
+      .admin-actions {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>👤 Kelola Admin & Daftar Admin</h1>
+      <p>Tunas Gurindam Corps - Manajemen & Daftar Administrator</p>
+      <div class="nav-buttons">
+        <a href="admin.html" class="nav-btn secondary">🏠 Kembali ke Admin Panel</a>
+        <a href="TUNAS GURINDAM.html" class="nav-btn secondary">📋 Ke Pengumuman</a>
+      </div>
+    </div>
+
+    <div id="alert-container"></div>
+
+    <!-- Login Section -->
+    <div id="login-section" class="login-section">
+      <div style="text-align: center; margin-bottom: 30px;">
+        <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #4f46e5, #7c3aed); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);">
+          <span style="font-size: 3rem; color: white;">🔐</span>
+        </div>
+        <h2 style="color: #4f46e5; margin-bottom: 10px; font-size: 2rem; font-weight: 700;">Akses Kelola Admin</h2>
+        <p style="color: #6b7280; font-size: 1rem; line-height: 1.5;">Masukkan kredensial administrator untuk mengakses<br>sistem manajemen admin dan daftar administrator</p>
+      </div>
+      
+      <form id="login-form" style="max-width: 400px; margin: 0 auto;">
+        <div class="form-group">
+          <label for="username" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span style="font-size: 1.2rem;">👤</span>
+            <span>Username Administrator</span>
+          </label>
+          <input type="text" id="username" name="username" required placeholder="Masukkan username admin" style="padding: 18px 20px; font-size: 1.1rem; border: 3px solid #e5e7eb; border-radius: 12px; transition: all 0.3s ease;">
+        </div>
+
+        <div class="form-group">
+          <label for="password" style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+            <span style="font-size: 1.2rem;">🔑</span>
+            <span>Password Administrator</span>
+          </label>
+          <input type="password" id="password" name="password" required placeholder="Masukkan password admin" style="padding: 18px 20px; font-size: 1.1rem; border: 3px solid #e5e7eb; border-radius: 12px; transition: all 0.3s ease;">
+        </div>
+
+        <button type="submit" class="btn" style="padding: 18px 25px; font-size: 1.2rem; font-weight: 700; border-radius: 12px; background: linear-gradient(135deg, #4f46e5, #7c3aed); box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3); transition: all 0.3s ease;">
+          <span style="margin-right: 10px;">🚪</span>
+          Masuk ke Panel Admin
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 2px solid #e5e7eb;">
+        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 10px;">Sistem Keamanan Tingkat Tinggi</p>
+        <div style="display: flex; justify-content: center; gap: 15px; font-size: 0.8rem; color: #9ca3af;">
+          <span>🔒 Enkripsi SSL</span>
+          <span>🛡️ Proteksi Data</span>
+          <span>⚡ Akses Cepat</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Management Section -->
+    <div id="admin-section" class="admin-section">
+      <!-- Logout Button at Top -->
+      <div style="text-align: right; margin-bottom: 30px;">
+        <button id="logout-btn-top" class="btn btn-danger" style="width: auto; padding: 12px 25px;">🚪 Logout</button>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h4>Total Admin</h4>
+          <div class="number" id="total-admins">0</div>
+        </div>
+        <div class="stat-card">
+          <h4>Admin Aktif</h4>
+          <div class="number" id="active-admins">0</div>
+        </div>
+      </div>
+
+      <!-- Add New Admin Form -->
+      <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h2 style="color: #4f46e5; margin-bottom: 20px;">➕ Tambah Admin Baru</h2>
+        
+        <div class="form-group">
+          <label for="new-admin-user">Username Admin Baru:</label>
+          <input type="text" id="new-admin-user" placeholder="Masukkan username admin baru">
+        </div>
+        
+        <div class="form-group">
+          <label for="new-admin-pass">Password Admin Baru:</label>
+          <input type="password" id="new-admin-pass" placeholder="Masukkan password admin baru">
+        </div>
+        
+        <button id="add-admin-btn" class="btn btn-success">➕ Tambah Admin</button>
+      </div>
+
+      <!-- Admin List Table -->
+      <div style="background: rgba(255, 255, 255, 0.95); border-radius: 15px; padding: 25px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <h2 style="color: #4f46e5; margin-bottom: 20px;">📋 Daftar Administrator</h2>
+
+        <table class="admin-table" id="admin-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">No</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th style="width: 200px;">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="admin-tbody">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 40px;">
+                <div style="display: inline-block; width: 20px; height: 20px; border: 3px solid #f3f3f3; border-top: 3px solid #4f46e5; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 10px; color: #6b7280;">Memuat data admin...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Admin credentials for validation
+    let adminCredentials = [];
+
+    // Load admin credentials from localStorage
+    function loadAdminCredentialsFromStorage() {
+      const saved = localStorage.getItem('tunasGurindamAdminCredentials');
+      if (saved) {
+        adminCredentials = JSON.parse(saved);
+      } else {
+        // Default admin credentials
+        adminCredentials = [
+          { user: 'ADMIN', pass: 'ADMIN' },
+          { user: 'ADMIN', pass: 'TUNASGURINDAM' },
+          { user: 'OKA', pass: 'OKAJB123' },
+          { user: 'PENDY SETIAWANSYAH', pass: 'TUNASGURINDAM' },
+          { user: 'DIGO BRAMALDO TAKBIRANTO', pass: 'TUNASGURINDAM' },
+          { user: 'ROBY SAHPUTRA', pass: 'TUNASGURINDAM' },
+          { user: 'OGGY ARLIANSYAH', pass: 'TUNASGURINDAM' }
+        ];
+        saveAdminCredentialsToStorage();
+      }
+    }
+
+    // Save admin credentials to localStorage
+    function saveAdminCredentialsToStorage() {
+      localStorage.setItem('tunasGurindamAdminCredentials', JSON.stringify(adminCredentials));
+    }
+
+    // Show alert message
+    function showAlert(message, type = 'success') {
+      const alertContainer = document.getElementById('alert-container');
+      const alert = document.createElement('div');
+      alert.className = `alert alert-${type}`;
+      alert.textContent = message;
+      alertContainer.appendChild(alert);
+
+      setTimeout(() => {
+        alert.remove();
+      }, 5000);
+    }
+
+    // Update statistics
+    function updateStats() {
+      const totalAdmins = adminCredentials.length;
+      document.getElementById('total-admins').textContent = totalAdmins;
+      document.getElementById('active-admins').textContent = totalAdmins; // All admins are considered active
+    }
+
+    // Display admin table
+    function displayAdminTable() {
+      const tbody = document.getElementById('admin-tbody');
+      tbody.innerHTML = '';
+
+      if (adminCredentials.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 40px; color: #6b7280;">
+              Belum ada admin terdaftar
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      adminCredentials.forEach((admin, index) => {
+        const tr = document.createElement('tr');
+
+        // No
+        const tdNo = document.createElement('td');
+        tdNo.textContent = index + 1;
+        tr.appendChild(tdNo);
+
+        // Username
+        const tdUsername = document.createElement('td');
+        tdUsername.innerHTML = `<strong>${admin.user}</strong>`;
+        tr.appendChild(tdUsername);
+
+        // Password (masked)
+        const tdPassword = document.createElement('td');
+        tdPassword.innerHTML = `<code style="background: #f3f4f6; padding: 4px 8px; border-radius: 4px; font-family: monospace;">${'*'.repeat(admin.pass.length)}</code>`;
+        tr.appendChild(tdPassword);
+
+        // Actions
+        const tdActions = document.createElement('td');
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'admin-actions';
+
+        const viewBtn = document.createElement('button');
+        viewBtn.textContent = '👁️ Lihat';
+        viewBtn.className = 'btn btn-warning';
+        viewBtn.addEventListener('click', () => viewAdmin(index));
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = '✏️ Edit';
+        editBtn.className = 'btn btn-warning';
+        editBtn.addEventListener('click', () => editAdmin(index));
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = '🗑️ Hapus';
+        deleteBtn.className = 'btn btn-danger';
+        deleteBtn.addEventListener('click', () => deleteAdmin(index));
+
+        actionsDiv.appendChild(viewBtn);
+        actionsDiv.appendChild(editBtn);
+        actionsDiv.appendChild(deleteBtn);
+
+        tdActions.appendChild(actionsDiv);
+        tr.appendChild(tdActions);
+
+        tbody.appendChild(tr);
+      });
+
+      updateStats();
+    }
+
+    // View admin details
+    function viewAdmin(index) {
+      const admin = adminCredentials[index];
+      alert(`Detail Admin:\n\nUsername: ${admin.user}\nPassword: ${admin.pass}\n\nIndex: ${index + 1}`);
+    }
+
+    // Add new admin
+    function addNewAdmin() {
+      const username = document.getElementById('new-admin-user').value.trim();
+      const password = document.getElementById('new-admin-pass').value.trim();
+
+      if (!username || !password) {
+        showAlert('Username dan password admin harus diisi!', 'error');
+        return;
+      }
+
+      // Check if username already exists
+      const existingAdmin = adminCredentials.find(admin => admin.user.toLowerCase() === username.toLowerCase());
+      if (existingAdmin) {
+        showAlert('Username admin sudah ada!', 'error');
+        return;
+      }
+
+      adminCredentials.push({ user: username, pass: password });
+      saveAdminCredentialsToStorage();
+
+      document.getElementById('new-admin-user').value = '';
+      document.getElementById('new-admin-pass').value = '';
+
+      displayAdminTable();
+      showAlert('Admin baru berhasil ditambahkan!', 'success');
+    }
+
+    // Edit admin
+    function editAdmin(index) {
+      const admin = adminCredentials[index];
+      const newUsername = prompt('Username baru:', admin.user);
+      const newPassword = prompt('Password baru:', admin.pass);
+
+      if (newUsername && newPassword) {
+        // Check if new username already exists (except current one)
+        const existingAdmin = adminCredentials.find((a, i) => i !== index && a.user.toLowerCase() === newUsername.toLowerCase());
+        if (existingAdmin) {
+          showAlert('Username admin sudah ada!', 'error');
+          return;
+        }
+
+        adminCredentials[index] = { user: newUsername, pass: newPassword };
+        saveAdminCredentialsToStorage();
+        displayAdminTable();
+        showAlert('Data admin berhasil diperbarui!', 'success');
+      }
+    }
+
+    // Delete admin
+    function deleteAdmin(index) {
+      const admin = adminCredentials[index];
+      if (confirm(`Apakah Anda yakin ingin menghapus admin "${admin.user}"?`)) {
+        adminCredentials.splice(index, 1);
+        saveAdminCredentialsToStorage();
+        displayAdminTable();
+        showAlert('Admin berhasil dihapus!', 'success');
+      }
+    }
+
+    // Handle login
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        showAlert('Mohon masukkan username dan password.', 'error');
+        return;
+      }
+
+      // Check credentials - only allow OKA with OKAJB123@
+      const isValid = (username === 'OKA' && password === 'OKAJB123@');
+
+      if (isValid) {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('admin-section').style.display = 'block';
+        displayAdminTable();
+        showAlert('Login berhasil! Selamat datang di panel Kelola Admin.', 'success');
+      } else {
+        showAlert('Username atau password salah.', 'error');
+      }
+    });
+
+    // Handle logout function
+    function handleLogout() {
+      if (confirm('Apakah Anda yakin ingin logout?')) {
+        document.getElementById('login-section').style.display = 'block';
+        document.getElementById('admin-section').style.display = 'none';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        document.getElementById('new-admin-user').value = '';
+        document.getElementById('new-admin-pass').value = '';
+        showAlert('Logout berhasil.', 'success');
+      }
+    }
+
+    // Handle logout for top button
+    document.getElementById('logout-btn-top').addEventListener('click', handleLogout);
+
+    // Handle add admin
+    document.getElementById('add-admin-btn').addEventListener('click', addNewAdmin);
+
+    // Initialize
+    loadAdminCredentialsFromStorage();
+  </script>
+</body>
+</html>

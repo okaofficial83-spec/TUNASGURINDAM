@@ -1,0 +1,387 @@
+R<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login - Tunas Gurindam Corps</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 450px;
+      text-align: center;
+    }
+
+    .login-header {
+      margin-bottom: 30px;
+    }
+
+    .login-header h1 {
+      color: #4f46e5;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .login-header p {
+      color: #6b7280;
+      font-size: 1rem;
+    }
+
+    .login-form {
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      color: #374151;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background: white;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .login-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      margin-bottom: 15px;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
+    }
+
+    .login-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-btn {
+      background: #6b7280;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+
+    .secondary-btn:hover {
+      background: #4b5563;
+      transform: translateY(-1px);
+    }
+
+    .error-message {
+      display: none;
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #fecaca;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .success-message {
+      display: none;
+      background: #d1fae5;
+      color: #065f46;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #a7f3d0;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4f46e5;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .shake {
+      animation: shake 0.5s ease-in-out;
+    }
+
+    .nav-links {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .nav-links a {
+      color: #6b7280;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 10px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #4f46e5;
+    }
+
+    .credentials-hint {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      color: #92400e;
+    }
+
+    .credentials-hint a {
+      color: #dc2626;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .credentials-hint a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+
+      .login-header h1 {
+        font-size: 2rem;
+      }
+
+      .nav-links a {
+        display: block;
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-header">
+      <h1>🔐 Admin Login</h1>
+      <p>Tunas Gurindam Corps - Panel Administrator</p>
+    </div>
+
+
+    <form class="login-form" id="login-form">
+      <div class="form-group">
+        <label for="username">Username Admin:</label>
+        <input type="text" id="username" name="username" required
+               placeholder="Masukkan username admin" autocomplete="username">
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password Admin:</label>
+        <input type="password" id="password" name="password" required
+               placeholder="Masukkan password admin" autocomplete="current-password">
+      </div>
+
+      <button type="submit" class="login-btn" id="login-btn">
+        🚪 Masuk ke Admin Panel
+      </button>
+    </form>
+
+    <div class="error-message" id="error-message">
+      Username atau password salah. Silakan coba lagi.
+    </div>
+
+    <div class="success-message" id="success-message">
+      <div class="loading"></div>
+      Login berhasil! Mengalihkan ke panel admin...
+    </div>
+
+    <div style="text-align: center; margin-bottom: 20px;">
+      <button class="secondary-btn" id="clear-btn">🧹 Clear Form</button>
+    </div>
+
+    <div class="nav-links">
+      <a href="TUNAS GURINDAM.html">🏠 Kembali ke Pengumuman</a>
+    </div>
+  </div>
+
+  <script>
+    // Load admin credentials from localStorage (connected to Kelola Admin data)
+    let adminCredentials = [];
+    
+    function loadAdminCredentialsFromStorage() {
+      const saved = localStorage.getItem('tunasGurindamAdminCredentials');
+      if (saved) {
+        adminCredentials = JSON.parse(saved);
+      } else {
+        // Default admin credentials if none exist
+        adminCredentials = [
+          { user: 'OKA', pass: 'OKAJB123@' }
+        ];
+        localStorage.setItem('tunasGurindamAdminCredentials', JSON.stringify(adminCredentials));
+      }
+    }
+    
+    // Initialize admin credentials
+    loadAdminCredentialsFromStorage();
+
+    // DOM elements
+    const loginForm = document.getElementById('login-form');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    const errorMessage = document.getElementById('error-message');
+    const successMessage = document.getElementById('success-message');
+
+    // Handle form submission
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      // Validate input
+      if (!username || !password) {
+        showError('Mohon masukkan username dan password.');
+        return;
+      }
+
+      // Disable button during validation
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<div class="loading"></div>Memverifikasi...';
+
+      // Check credentials against all administrators in the system
+      const isValid = adminCredentials.some(cred =>
+        cred.user === username && cred.pass === password
+      );
+
+      setTimeout(() => {
+        if (isValid) {
+          showSuccess();
+          setTimeout(() => {
+            window.location.href = 'admin.html';
+          }, 1500);
+        } else {
+          showError('Username atau password salah.');
+          loginBtn.disabled = false;
+          loginBtn.innerHTML = '🚪 Masuk ke Admin Panel';
+        }
+      }, 1000); // Simulate processing time
+    });
+
+    // Handle clear button
+    clearBtn.addEventListener('click', () => {
+      usernameInput.value = '';
+      passwordInput.value = '';
+      hideMessages();
+      usernameInput.focus();
+    });
+
+    // Enter key support for password field
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        loginForm.dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Show error message
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.style.display = 'block';
+      successMessage.style.display = 'none';
+
+      // Shake animation
+      loginForm.classList.add('shake');
+      setTimeout(() => {
+        loginForm.classList.remove('shake');
+      }, 500);
+    }
+
+    // Show success message
+    function showSuccess() {
+      successMessage.style.display = 'block';
+      errorMessage.style.display = 'none';
+      loginBtn.innerHTML = '✅ Login Berhasil!';
+    }
+
+    // Hide all messages
+    function hideMessages() {
+      errorMessage.style.display = 'none';
+      successMessage.style.display = 'none';
+    }
+
+    // Focus on username input when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      usernameInput.focus();
+    });
+  </script>
+</body>
+</html>

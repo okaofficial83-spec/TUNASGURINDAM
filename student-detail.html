@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Detail Siswa - Tunas Gurindam Corps</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .header {
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      color: #4f46e5;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .header p {
+      color: #6b7280;
+      font-size: 1.1rem;
+    }
+
+    .student-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .student-photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid #4f46e5;
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.3);
+      margin: 0 auto 30px;
+      display: block;
+    }
+
+    .student-name {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #4f46e5;
+      margin-bottom: 10px;
+    }
+
+    .student-status {
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 15px 30px;
+      border-radius: 50px;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+
+    .status-passed {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+    }
+
+    .status-failed {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+    }
+
+    .student-info {
+      text-align: left;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .info-section {
+      margin-bottom: 25px;
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 15px;
+      border-left: 5px solid #4f46e5;
+    }
+
+    .info-section h3 {
+      color: #4f46e5;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .info-section p {
+      color: #374151;
+      line-height: 1.6;
+      font-size: 1rem;
+    }
+
+    .congratulations {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border: 2px solid #f59e0b;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .congratulations h3 {
+      color: #92400e;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .congratulations p {
+      color: #78350f;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .motivation {
+      background: linear-gradient(135deg, #fee2e2, #fecaca);
+      border: 2px solid #ef4444;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .motivation h3 {
+      color: #dc2626;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+
+    .motivation p {
+      color: #b91c1c;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      border: none;
+      padding: 16px 24px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.3);
+      min-height: 44px; /* Minimum touch target */
+      box-sizing: border-box;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+    }
+
+    .nav-btn.secondary {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+
+    .nav-btn.secondary:hover {
+      box-shadow: 0 10px 30px rgba(107, 114, 128, 0.3);
+    }
+
+    .error-message {
+      background: linear-gradient(135deg, #fee2e2, #fecaca);
+      border: 2px solid #ef4444;
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
+      color: #dc2626;
+    }
+
+    .error-message h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .error-message p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    /* Mobile optimizations for Android devices */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        margin: 10px auto;
+      }
+
+      .header {
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 1.8rem;
+        margin-bottom: 5px;
+      }
+
+      .header p {
+        font-size: 0.9rem;
+      }
+
+      .student-card {
+        padding: 30px 20px;
+      }
+
+      .student-photo {
+        width: 140px;
+        height: 140px;
+      }
+
+      .student-name {
+        font-size: 1.6rem;
+      }
+
+      .student-status {
+        font-size: 1.2rem;
+        padding: 12px 24px;
+      }
+
+      .info-section {
+        padding: 15px;
+      }
+
+      .info-section h3 {
+        font-size: 1.1rem;
+      }
+
+      .nav-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .nav-btn {
+        padding: 18px 20px;
+        font-size: 0.95rem;
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Extra small mobile devices */
+    @media (max-width: 480px) {
+      .container {
+        padding: 10px;
+        margin: 5px auto;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .student-card {
+        padding: 25px 15px;
+      }
+
+      .student-photo {
+        width: 120px;
+        height: 120px;
+      }
+
+      .student-name {
+        font-size: 1.4rem;
+      }
+
+      .student-status {
+        font-size: 1.1rem;
+        padding: 10px 20px;
+      }
+
+      .info-section {
+        padding: 12px;
+      }
+
+      .info-section h3 {
+        font-size: 1rem;
+      }
+
+      .nav-btn {
+        padding: 20px 16px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Music Control Styles */
+    #music-control {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    #music-btn {
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #4f46e5;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #4f46e5;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    #music-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    #music-btn.playing {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      color: white;
+      border-color: #16a34a;
+      animation: pulse 2s infinite;
+    }
+
+    #music-btn.muted {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      color: white;
+      border-color: #dc2626;
+    }
+
+    /* Mobile responsive for music control */
+    @media (max-width: 768px) {
+      #music-control {
+        top: 15px;
+        right: 15px;
+      }
+
+      #music-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #music-control {
+        top: 10px;
+        right: 10px;
+      }
+
+      #music-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+ <!-- Background Music (continued from main page) -->
+ <audio id="bg-music" loop preload="auto">
+   <source src="[Royalty Free] Awarding Background Music for Nomination Show and Ceremony Opening.mp3" type="audio/mpeg">
+   Your browser does not support the audio element.
+ </audio>
+
+ <!-- Music Control Button -->
+ <div id="music-control" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+   <button id="music-btn" style="background: rgba(255,255,255,0.9); border: 2px solid #4f46e5; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #4f46e5; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: all 0.3s ease;">
+     🔊
+   </button>
+ </div>
+
+ <div class="container">
+    <div class="header">
+      <h1>🎉 Detail Siswa</h1>
+      <p>Tunas Gurindam Corps - Informasi Lengkap Peserta</p>
+      <div style="font-size: 0.9rem; color: #6b7280; margin-top: 5px;">
+        <span style="color: #22c55e;">🎵 Musik latar otomatis dimainkan untuk momen spesial ini</span>
+      </div>
+    </div>
+
+    <div id="content">
+      <!-- Content will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    // Student data
+    let students = {};
+
+    // Fungsi untuk memuat data siswa dari localStorage
+    function loadStudentsFromStorage() {
+      const saved = localStorage.getItem('tunasGurindamStudents');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        Object.keys(students).forEach(key => delete students[key]);
+        Object.assign(students, parsed);
+      } else {
+        // Data awal jika belum ada di localStorage
+        students = {
+          "TGC00001": { nama: "AHMAD", status: "LULUS" },
+          "TGC00002": { nama: "SITI", status: "LULUS" },
+          "TGC00003": { nama: "BUDI", status: "TIDAK LULUS" },
+          "TGC00004": { nama: "RINA", status: "LULUS" },
+          "TGC00005": { nama: "DENI", status: "LULUS" },
+          "TGC00006": { nama: "LINA", status: "TIDAK LULUS" },
+          "TGC00007": { nama: "BAIM", status: "LULUS" },
+          "TGC00008": { nama: "FARAH", status: "LULUS" },
+          "TGC00009": { nama: "GILANG", status: "TIDAK LULUS" },
+          "TGC00010": { nama: "HANA", status: "LULUS" },
+          "TGC00011": { nama: "DONI", status: "TIDAK LULUS" },
+          "TGC00012": { nama: "SARI", status: "TIDAK LULUS" },
+          "TGC00013": { nama: "REZA", status: "LULUS" },
+          "TGC00014": { nama: "NOVA", status: "TIDAK LULUS" },
+          "TGC00015": { nama: "ANDI", status: "LULUS" }
+        };
+        // Simpan ke localStorage
+        localStorage.setItem('tunasGurindamStudents', JSON.stringify(students));
+      }
+    }
+
+    // Get student name from URL parameter
+    function getStudentNameFromURL() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get('name');
+    }
+
+    // Find student by name
+    function findStudentByName(name) {
+      for (const key in students) {
+        if (students[key].nama.toLowerCase() === name.toLowerCase()) {
+          return { ...students[key], id: key };
+        }
+      }
+      return null;
+    }
+
+    // Generate student photo URL (placeholder)
+    function getStudentPhoto(name) {
+      // You can replace this with actual photo URLs or a default image
+      return "242104513_266398215333645_4612524844173446882_n.jpg";
+    }
+
+    // Display student details
+    function displayStudentDetails(student) {
+      const content = document.getElementById('content');
+
+      const statusClass = student.status === 'LULUS' ? 'status-passed' : 'status-failed';
+      const statusText = student.status === 'LULUS' ? '🎉 LULUS' : '💪 TIDAK LULUS';
+
+      let additionalContent = '';
+
+      if (student.status === 'LULUS') {
+        additionalContent = `
+          <div class="congratulations">
+            <h3>🎊 Selamat! Anda Berhasil Lulus!</h3>
+            <p>Selamat bergabung dengan Tunas Gurindam Corps Angkatan 7 2025/2026. Persiapkan diri Anda untuk petualangan yang luar biasa dan pengalaman yang tak terlupakan bersama kami!</p>
+          </div>
+        `;
+      } else {
+        additionalContent = `
+          <div class="motivation">
+            <h3>💪 Jangan Menyerah!</h3>
+            <p>Kegagalan adalah awal dari kesuksesan. Teruslah berusaha dan persiapkan diri untuk kesempatan berikutnya. Kami yakin Anda akan berhasil di lain waktu!</p>
+          </div>
+        `;
+      }
+
+      content.innerHTML = `
+        <div class="student-card">
+          <img src="${getStudentPhoto(student.nama)}" alt="Foto ${student.nama}" class="student-photo" onerror="this.src='242104513_266398215333645_4612524844173446882_n.jpg'">
+          <h2 class="student-name">${student.nama}</h2>
+          <div class="student-status ${statusClass}">${statusText}</div>
+
+          <div class="student-info">
+            <div class="info-section">
+              <h3>📊 Status Kelulusan</h3>
+              <p><strong>Hasil Seleksi:</strong> ${student.status}</p>
+              <p><strong>Angkatan:</strong> Tunas Gurindam Corps Akt 7 2025/2026</p>
+              <p><strong>ID Peserta:</strong> ${student.id}</p>
+            </div>
+
+            <div class="info-section">
+              <h3>📅 Informasi Penting</h3>
+              <p><strong>Tanggal Pengumuman:</strong> 8 September 2025</p>
+              <p><strong>Waktu:</strong> 21:55 WIB</p>
+              <p><strong>Lokasi:</strong> Sekretariat Tunas Gurindam Corps</p>
+            </div>
+          </div>
+        </div>
+
+        ${additionalContent}
+
+        <div class="nav-buttons">
+          <a href="TUNAS GURINDAM.html" class="nav-btn">🏠 Kembali ke Pengumuman</a>
+          <a href="admin-access.html" class="nav-btn secondary">🔐 Akses Admin</a>
+        </div>
+      `;
+    }
+
+    // Display error message
+    function displayError(message) {
+      const content = document.getElementById('content');
+      content.innerHTML = `
+        <div class="error-message">
+          <h2>❌ Data Tidak Ditemukan</h2>
+          <p>${message}</p>
+          <a href="TUNAS GURINDAM.html" class="nav-btn">🏠 Kembali ke Pengumuman</a>
+        </div>
+      `;
+    }
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load students from localStorage
+      loadStudentsFromStorage();
+
+      const studentName = getStudentNameFromURL();
+
+      if (!studentName) {
+        displayError('Nama siswa tidak ditemukan dalam URL. Silakan kembali ke halaman pengumuman dan masukkan nama Anda.');
+        return;
+      }
+
+      const student = findStudentByName(decodeURIComponent(studentName));
+
+      if (!student) {
+        displayError(`Data siswa dengan nama "${decodeURIComponent(studentName)}" tidak ditemukan. Pastikan nama yang dimasukkan sudah benar.`);
+        return;
+      }
+
+      // Check student status and handle music accordingly
+      if (student.status === 'TIDAK LULUS') {
+        // Disable music for non-passed students
+        disableMusicForNonPassed();
+      } else {
+        // Enable aggressive autoplay for passed students
+        enableMusicForPassed();
+      }
+
+      displayStudentDetails(student);
+    });
+
+    // Music Control Functionality
+    const bgMusic = document.getElementById('bg-music');
+    const musicBtn = document.getElementById('music-btn');
+    let musicPlaying = false;
+    let autoplayAttempted = false;
+
+    // Function to update music button state
+    function updateMusicButton() {
+      if (musicPlaying) {
+        musicBtn.textContent = '🔊';
+        musicBtn.className = 'playing';
+        musicBtn.title = 'Musik sedang dimainkan - Klik untuk pause';
+      } else {
+        musicBtn.textContent = '🔇';
+        musicBtn.className = 'muted';
+        musicBtn.title = 'Musik paused - Klik untuk play';
+      }
+    }
+
+    // Function to play music
+    function playMusic() {
+      const playPromise = bgMusic.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          musicPlaying = true;
+          updateMusicButton();
+          console.log('Music started playing');
+        }).catch(error => {
+          console.log('Autoplay blocked:', error);
+          musicPlaying = false;
+          updateMusicButton();
+          // Show message to user about autoplay being blocked
+          if (!autoplayAttempted) {
+            setTimeout(() => {
+              alert('Musik tidak dapat dimainkan otomatis. Klik tombol musik 🔊 untuk memulai musik latar.');
+            }, 1000);
+          }
+        });
+      }
+      autoplayAttempted = true;
+    }
+
+    // Function to pause music
+    function pauseMusic() {
+      bgMusic.pause();
+      musicPlaying = false;
+      updateMusicButton();
+      console.log('Music paused');
+    }
+
+    // Aggressive autoplay for student detail page (celebratory moment)
+    document.addEventListener('DOMContentLoaded', () => {
+      // Immediate attempt
+      setTimeout(() => {
+        playMusic();
+      }, 100);
+
+      // Backup attempts in case first one fails
+      setTimeout(() => {
+        if (!musicPlaying) {
+          console.log('Backup autoplay attempt 1');
+          playMusic();
+        }
+      }, 500);
+
+      setTimeout(() => {
+        if (!musicPlaying) {
+          console.log('Backup autoplay attempt 2');
+          playMusic();
+        }
+      }, 1000);
+
+      // Final attempt after page is fully loaded
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (!musicPlaying) {
+            console.log('Final autoplay attempt after page load');
+            playMusic();
+          }
+        }, 200);
+      });
+    });
+
+    // Music button click handler
+    musicBtn.addEventListener('click', () => {
+      if (musicPlaying) {
+        pauseMusic();
+      } else {
+        playMusic();
+      }
+    });
+
+    // Handle music end (loop)
+    bgMusic.addEventListener('ended', () => {
+      console.log('Music ended, restarting...');
+      playMusic();
+    });
+
+    // Handle page visibility change (pause when tab is hidden)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden && musicPlaying) {
+        pauseMusic();
+      } else if (!document.hidden && !musicPlaying) {
+        // Optionally resume when tab becomes visible
+        // playMusic();
+      }
+    });
+
+    // Function to disable music for non-passed students
+    function disableMusicForNonPassed() {
+      console.log('Disabling music for non-passed student');
+
+      // Set music disabled flag
+      musicDisabled = true;
+
+      // Hide music control button
+      const musicControl = document.getElementById('music-control');
+      if (musicControl) {
+        musicControl.style.display = 'none';
+      }
+
+      // Update header message
+      const headerMessage = document.querySelector('.header div[style*="color"]');
+      if (headerMessage) {
+        headerMessage.textContent = '🎵 Musik latar tidak dimainkan untuk halaman ini';
+        headerMessage.style.color = '#6b7280';
+      }
+
+      // Disable all music functionality
+      musicPlaying = false;
+      clickToPlayEnabled = false;
+
+      // Remove all event listeners
+      document.removeEventListener('click', firstClickToPlay);
+      bgMusic.removeEventListener('ended', function() { playMusic(); });
+      bgMusic.removeEventListener('ended', function() { console.log('Music ended, restarting...'); playMusic(); });
+    }
+
+    // Function to enable music for passed students
+    function enableMusicForPassed() {
+      console.log('Enabling music for passed student');
+
+      // Update header message
+      const headerMessage = document.querySelector('.header div[style*="color: #22c55e"]');
+      if (headerMessage) {
+        headerMessage.textContent = '🎵 Musik latar otomatis dimainkan untuk momen spesial ini';
+        headerMessage.style.color = '#22c55e';
+      }
+
+      // Enable aggressive autoplay
+      enableAggressiveAutoplay();
+    }
+
+    // Function to enable aggressive autoplay for passed students
+    function enableAggressiveAutoplay() {
+      // Immediate attempt
+      setTimeout(() => {
+        playMusic();
+      }, 100);
+
+      // Backup attempts
+      setTimeout(() => {
+        if (!musicPlaying) {
+          console.log('Backup autoplay attempt 1');
+          playMusic();
+        }
+      }, 500);
+
+      setTimeout(() => {
+        if (!musicPlaying) {
+          console.log('Backup autoplay attempt 2');
+          playMusic();
+        }
+      }, 1000);
+
+      // Final attempt after page load
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if (!musicPlaying) {
+            console.log('Final autoplay attempt after page load');
+            playMusic();
+          }
+        }, 200);
+      });
+    }
+
+    // Initialize button state
+    updateMusicButton();
+
+    // Enhanced click anywhere to play music (celebratory page - more responsive)
+    let clickToPlayEnabled = true;
+    let autoplayAttempts = 0;
+    const maxAutoplayAttempts = 5;
+    let musicDisabled = false; // Flag to track if music is disabled for this student
+
+    function attemptImmediatePlay() {
+      if (autoplayAttempts < maxAutoplayAttempts && !musicPlaying && !musicDisabled) {
+        autoplayAttempts++;
+        console.log(`Immediate autoplay attempt ${autoplayAttempts}`);
+        playMusic();
+      }
+    }
+
+    document.addEventListener('click', function firstClickToPlay(event) {
+      // Don't trigger if music is disabled for this student
+      if (musicDisabled) {
+        return;
+      }
+
+      // Don't trigger if clicking on music control button
+      if (event.target.closest('#music-control')) {
+        return;
+      }
+
+      // Don't trigger if music is already playing
+      if (musicPlaying) {
+        return;
+      }
+
+      // Don't trigger if we've already handled the first click
+      if (!clickToPlayEnabled) {
+        return;
+      }
+
+      console.log('First click on student detail page - immediate music play');
+      clickToPlayEnabled = false;
+
+      // Remove this event listener after first use
+      document.removeEventListener('click', firstClickToPlay);
+
+      // Immediate attempt to play music
+      attemptImmediatePlay();
+
+      // Additional attempts if first one fails
+      setTimeout(() => attemptImmediatePlay(), 200);
+      setTimeout(() => attemptImmediatePlay(), 500);
+    });
+  </script>
+</body>
+</html>
